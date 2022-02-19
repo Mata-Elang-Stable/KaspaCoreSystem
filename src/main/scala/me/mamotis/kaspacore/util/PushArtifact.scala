@@ -1,12 +1,13 @@
 package me.mamotis.kaspacore.util
 
-import java.util.UUID.randomUUID
+import com.datastax.oss.driver.api.core.cql.ResultSet
 
+import java.util.UUID.randomUUID
 import com.datastax.spark.connector.cql.CassandraConnector
 
 object PushArtifact {
 
-  def pushRawData(value: Commons.EventObj, connector: CassandraConnector) = {
+  def pushRawData(value: Commons.EventObj, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_raw_data_by_company(randomUUID(), value.ts, value.company, value.device_id, value.year, value.month, value.day, value.hour,
@@ -21,7 +22,7 @@ object PushArtifact {
     }
   }
 
-  def pushEventHitCompanySec(value: Commons.EventHitCompanyObjSec, connector: CassandraConnector) = {
+  def pushEventHitCompanySec(value: Commons.EventHitCompanyObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_event_hit_company_second(value.company, value.year, value.month, value.day, value.hour,
@@ -29,7 +30,7 @@ object PushArtifact {
     }
   }
 
-  def pushEventHitCompanyMin(value: Commons.EventHitCompanyObjMin, connector: CassandraConnector) = {
+  def pushEventHitCompanyMin(value: Commons.EventHitCompanyObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_event_hit_company_minute(value.company, value.year, value.month, value.day, value.hour,
@@ -37,21 +38,21 @@ object PushArtifact {
     }
   }
 
-  def pushEventHitCompanyHour(value: Commons.EventHitCompanyObjHour, connector: CassandraConnector) = {
+  def pushEventHitCompanyHour(value: Commons.EventHitCompanyObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_event_hit_company_hour(value.company, value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushEventHitCompanyDay(value: Commons.EventHitCompanyObjDay, connector: CassandraConnector) = {
+  def pushEventHitCompanyDay(value: Commons.EventHitCompanyObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_event_hit_company_day(value.company, value.year, value.month, value.day, value.value))
     }
   }
 
-  def pushEventHitDeviceIdSec(value: Commons.EventHitDeviceIdObjSec, connector: CassandraConnector) = {
+  def pushEventHitDeviceIdSec(value: Commons.EventHitDeviceIdObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_event_hit_device_id_second(value.device_id, value.year, value.month, value.day, value.hour,
@@ -59,7 +60,7 @@ object PushArtifact {
     }
   }
 
-  def pushEventHitDeviceIdMin(value: Commons.EventHitDeviceIdObjMin, connector: CassandraConnector) = {
+  def pushEventHitDeviceIdMin(value: Commons.EventHitDeviceIdObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_event_hit_device_id_minute(value.device_id, value.year, value.month, value.day, value.hour,
@@ -67,14 +68,14 @@ object PushArtifact {
     }
   }
 
-  def pushEventHitDeviceIdHour(value: Commons.EventHitDeviceIdObjHour, connector: CassandraConnector) = {
+  def pushEventHitDeviceIdHour(value: Commons.EventHitDeviceIdObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_event_hit_device_id_hour(value.device_id, value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushEventHitDeviceIdDay(value: Commons.EventHitDeviceIdObjDay, connector: CassandraConnector) = {
+  def pushEventHitDeviceIdDay(value: Commons.EventHitDeviceIdObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_event_hit_device_id_day(value.device_id, value.year, value.month, value.day, value.value))
@@ -83,7 +84,7 @@ object PushArtifact {
 
   //  Signature Hit Push Function
 
-  def pushSignatureHitCompanySec(value: Commons.SignatureHitCompanyObjSec, connector: CassandraConnector) = {
+  def pushSignatureHitCompanySec(value: Commons.SignatureHitCompanyObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_signature_hit_company_second(value.company, value.alert_msg, value.year, value.month, value.day, value.hour,
@@ -91,7 +92,7 @@ object PushArtifact {
     }
   }
 
-  def pushSignatureHitCompanyMin(value: Commons.SignatureHitCompanyObjMin, connector: CassandraConnector) = {
+  def pushSignatureHitCompanyMin(value: Commons.SignatureHitCompanyObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_signature_hit_company_minute(value.company, value.alert_msg, value.year, value.month, value.day, value.hour,
@@ -99,21 +100,21 @@ object PushArtifact {
     }
   }
 
-  def pushSignatureHitCompanyHour(value: Commons.SignatureHitCompanyObjHour, connector: CassandraConnector) = {
+  def pushSignatureHitCompanyHour(value: Commons.SignatureHitCompanyObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_signature_hit_company_hour(value.company, value.alert_msg, value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushSignatureHitCompanyDay(value: Commons.SignatureHitCompanyObjDay, connector: CassandraConnector) = {
+  def pushSignatureHitCompanyDay(value: Commons.SignatureHitCompanyObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_signature_hit_company_day(value.company, value.alert_msg, value.year, value.month, value.day, value.value))
     }
   }
 
-  def pushSignatureHitDeviceIdSec(value: Commons.SignatureHitDeviceIdObjSec, connector: CassandraConnector) = {
+  def pushSignatureHitDeviceIdSec(value: Commons.SignatureHitDeviceIdObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_signature_hit_device_id_second(value.device_id, value.alert_msg, value.year, value.month, value.day, value.hour,
@@ -121,7 +122,7 @@ object PushArtifact {
     }
   }
 
-  def pushSignatureHitDeviceIdMin(value: Commons.SignatureHitDeviceIdObjMin, connector: CassandraConnector) = {
+  def pushSignatureHitDeviceIdMin(value: Commons.SignatureHitDeviceIdObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_signature_hit_device_id_minute(value.device_id, value.alert_msg, value.year, value.month, value.day, value.hour,
@@ -129,14 +130,14 @@ object PushArtifact {
     }
   }
 
-  def pushSignatureHitDeviceIdHour(value: Commons.SignatureHitDeviceIdObjHour, connector: CassandraConnector) = {
+  def pushSignatureHitDeviceIdHour(value: Commons.SignatureHitDeviceIdObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_signature_hit_device_id_hour(value.device_id, value.alert_msg, value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushSignatureHitDeviceIdDay(value: Commons.SignatureHitDeviceIdObjDay, connector: CassandraConnector) = {
+  def pushSignatureHitDeviceIdDay(value: Commons.SignatureHitDeviceIdObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_signature_hit_device_id_day(value.device_id, value.alert_msg, value.year, value.month, value.day, value.value))
@@ -145,7 +146,7 @@ object PushArtifact {
 
   //  Protocol Hit Push Function
 
-  def pushProtocolHitCompanySec(value: Commons.ProtocolHitCompanyObjSec, connector: CassandraConnector) = {
+  def pushProtocolHitCompanySec(value: Commons.ProtocolHitCompanyObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_hit_company_second(value.company, value.protocol, value.year, value.month, value.day, value.hour,
@@ -153,7 +154,7 @@ object PushArtifact {
     }
   }
 
-  def pushProtocolHitCompanyMin(value: Commons.ProtocolHitCompanyObjMin, connector: CassandraConnector) = {
+  def pushProtocolHitCompanyMin(value: Commons.ProtocolHitCompanyObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_hit_company_minute(value.company, value.protocol, value.year, value.month, value.day, value.hour,
@@ -161,21 +162,21 @@ object PushArtifact {
     }
   }
 
-  def pushProtocolHitCompanyHour(value: Commons.ProtocolHitCompanyObjHour, connector: CassandraConnector) = {
+  def pushProtocolHitCompanyHour(value: Commons.ProtocolHitCompanyObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_hit_company_hour(value.company, value.protocol, value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushProtocolHitCompanyDay(value: Commons.ProtocolHitCompanyObjDay, connector: CassandraConnector) = {
+  def pushProtocolHitCompanyDay(value: Commons.ProtocolHitCompanyObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_hit_company_day(value.company, value.protocol, value.year, value.month, value.day, value.value))
     }
   }
 
-  def pushProtocolHitDeviceIdSec(value: Commons.ProtocolHitDeviceIdObjSec, connector: CassandraConnector) = {
+  def pushProtocolHitDeviceIdSec(value: Commons.ProtocolHitDeviceIdObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_hit_device_id_second(value.device_id, value.protocol, value.year, value.month, value.day, value.hour,
@@ -183,7 +184,7 @@ object PushArtifact {
     }
   }
 
-  def pushProtocolHitDeviceIdMin(value: Commons.ProtocolHitDeviceIdObjMin, connector: CassandraConnector) = {
+  def pushProtocolHitDeviceIdMin(value: Commons.ProtocolHitDeviceIdObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_hit_device_id_minute(value.device_id, value.protocol, value.year, value.month, value.day, value.hour,
@@ -191,14 +192,14 @@ object PushArtifact {
     }
   }
 
-  def pushProtocolHitDeviceIdHour(value: Commons.ProtocolHitDeviceIdObjHour, connector: CassandraConnector) = {
+  def pushProtocolHitDeviceIdHour(value: Commons.ProtocolHitDeviceIdObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_hit_device_id_hour(value.device_id, value.protocol, value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushProtocolHitDeviceIdDay(value: Commons.ProtocolHitDeviceIdObjDay, connector: CassandraConnector) = {
+  def pushProtocolHitDeviceIdDay(value: Commons.ProtocolHitDeviceIdObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_hit_device_id_day(value.device_id, value.protocol, value.year, value.month, value.day, value.value))
@@ -207,7 +208,7 @@ object PushArtifact {
 
   //  Protocol + Port Push Function
 
-  def pushProtocolBySPortHitCompanySec(value: Commons.ProtocolBySPortHitCompanyObjSec, connector: CassandraConnector) = {
+  def pushProtocolBySPortHitCompanySec(value: Commons.ProtocolBySPortHitCompanyObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_sport_hit_company_second(value.company, value.protocol, value.src_port, value.year, value.month, value.day, value.hour,
@@ -215,7 +216,7 @@ object PushArtifact {
     }
   }
 
-  def pushProtocolBySPortHitCompanyMin(value: Commons.ProtocolBySPortHitCompanyObjMin, connector: CassandraConnector) = {
+  def pushProtocolBySPortHitCompanyMin(value: Commons.ProtocolBySPortHitCompanyObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_sport_hit_company_minute(value.company, value.protocol, value.src_port,value.year, value.month, value.day, value.hour,
@@ -223,21 +224,21 @@ object PushArtifact {
     }
   }
 
-  def pushProtocolBySPortHitCompanyHour(value: Commons.ProtocolBySPortHitCompanyObjHour, connector: CassandraConnector) = {
+  def pushProtocolBySPortHitCompanyHour(value: Commons.ProtocolBySPortHitCompanyObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_sport_hit_company_hour(value.company, value.protocol, value.src_port,value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushProtocolBySPortHitCompanyDay(value: Commons.ProtocolBySPortHitCompanyObjDay, connector: CassandraConnector) = {
+  def pushProtocolBySPortHitCompanyDay(value: Commons.ProtocolBySPortHitCompanyObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_sport_hit_company_day(value.company, value.protocol, value.src_port,value.year, value.month, value.day, value.value))
     }
   }
 
-  def pushProtocolBySPortHitDeviceIdSec(value: Commons.ProtocolBySPortHitDeviceIdObjSec, connector: CassandraConnector) = {
+  def pushProtocolBySPortHitDeviceIdSec(value: Commons.ProtocolBySPortHitDeviceIdObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_sport_hit_device_id_second(value.device_id, value.protocol, value.src_port, value.year, value.month, value.day, value.hour,
@@ -245,7 +246,7 @@ object PushArtifact {
     }
   }
 
-  def pushProtocolBySPortHitDeviceIdMin(value: Commons.ProtocolBySPortHitDeviceIdObjMin, connector: CassandraConnector) = {
+  def pushProtocolBySPortHitDeviceIdMin(value: Commons.ProtocolBySPortHitDeviceIdObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_sport_hit_device_id_minute(value.device_id, value.protocol, value.src_port,value.year, value.month, value.day, value.hour,
@@ -253,21 +254,21 @@ object PushArtifact {
     }
   }
 
-  def pushProtocolBySPortHitDeviceIdHour(value: Commons.ProtocolBySPortHitDeviceIdObjHour, connector: CassandraConnector) = {
+  def pushProtocolBySPortHitDeviceIdHour(value: Commons.ProtocolBySPortHitDeviceIdObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_sport_hit_device_id_hour(value.device_id, value.protocol, value.src_port,value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushProtocolBySPortHitDeviceIdDay(value: Commons.ProtocolBySPortHitDeviceIdObjDay, connector: CassandraConnector) = {
+  def pushProtocolBySPortHitDeviceIdDay(value: Commons.ProtocolBySPortHitDeviceIdObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_sport_hit_device_id_day(value.device_id, value.protocol, value.src_port,value.year, value.month, value.day, value.value))
     }
   }
 
-  def pushProtocolByDPortHitCompanySec(value: Commons.ProtocolByDPortHitCompanyObjSec, connector: CassandraConnector) = {
+  def pushProtocolByDPortHitCompanySec(value: Commons.ProtocolByDPortHitCompanyObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_dport_hit_company_second(value.company, value.protocol, value.dest_port,value.year, value.month, value.day, value.hour,
@@ -275,7 +276,7 @@ object PushArtifact {
     }
   }
 
-  def pushProtocolByDPortHitCompanyMin(value: Commons.ProtocolByDPortHitCompanyObjMin, connector: CassandraConnector) = {
+  def pushProtocolByDPortHitCompanyMin(value: Commons.ProtocolByDPortHitCompanyObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_dport_hit_company_minute(value.company, value.protocol, value.dest_port,value.year, value.month, value.day, value.hour,
@@ -283,21 +284,21 @@ object PushArtifact {
     }
   }
 
-  def pushProtocolByDPortHitCompanyHour(value: Commons.ProtocolByDPortHitCompanyObjHour, connector: CassandraConnector) = {
+  def pushProtocolByDPortHitCompanyHour(value: Commons.ProtocolByDPortHitCompanyObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_dport_hit_company_hour(value.company, value.protocol, value.dest_port,value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushProtocolByDPortHitCompanyDay(value: Commons.ProtocolByDPortHitCompanyObjDay, connector: CassandraConnector) = {
+  def pushProtocolByDPortHitCompanyDay(value: Commons.ProtocolByDPortHitCompanyObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_dport_hit_company_day(value.company, value.protocol, value.dest_port,value.year, value.month, value.day, value.value))
     }
   }
 
-  def pushProtocolByDPortHitDeviceIdSec(value: Commons.ProtocolByDPortHitDeviceIdObjSec, connector: CassandraConnector) = {
+  def pushProtocolByDPortHitDeviceIdSec(value: Commons.ProtocolByDPortHitDeviceIdObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_dport_hit_device_id_second(value.device_id, value.protocol, value.dest_port,value.year, value.month, value.day, value.hour,
@@ -305,7 +306,7 @@ object PushArtifact {
     }
   }
 
-  def pushProtocolByDPortHitDeviceIdMin(value: Commons.ProtocolByDPortHitDeviceIdObjMin, connector: CassandraConnector) = {
+  def pushProtocolByDPortHitDeviceIdMin(value: Commons.ProtocolByDPortHitDeviceIdObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_dport_hit_device_id_minute(value.device_id, value.protocol, value.dest_port,value.year, value.month, value.day, value.hour,
@@ -313,14 +314,14 @@ object PushArtifact {
     }
   }
 
-  def pushProtocolByDPortHitDeviceIdHour(value: Commons.ProtocolByDPortHitDeviceIdObjHour, connector: CassandraConnector) = {
+  def pushProtocolByDPortHitDeviceIdHour(value: Commons.ProtocolByDPortHitDeviceIdObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_dport_hit_device_id_hour(value.device_id, value.protocol, value.dest_port,value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushProtocolByDPortHitDeviceIdDay(value: Commons.ProtocolByDPortHitDeviceIdObjDay, connector: CassandraConnector) = {
+  def pushProtocolByDPortHitDeviceIdDay(value: Commons.ProtocolByDPortHitDeviceIdObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_protocol_by_dport_hit_device_id_day(value.device_id, value.protocol, value.dest_port,value.year, value.month, value.day, value.value))
@@ -329,7 +330,7 @@ object PushArtifact {
 
   //  IP + Country Push Function
 
-  def pushIPSourceHitCompanySec(value: Commons.IPSourceHitCompanyObjSec, connector: CassandraConnector) = {
+  def pushIPSourceHitCompanySec(value: Commons.IPSourceHitCompanyObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_source_hit_company_second(value.company, value.src_ip, value.country,value.year, value.month, value.day, value.hour,
@@ -337,7 +338,7 @@ object PushArtifact {
     }
   }
 
-  def pushIPSourceHitCompanyMin(value: Commons.IPSourceHitCompanyObjMin, connector: CassandraConnector) = {
+  def pushIPSourceHitCompanyMin(value: Commons.IPSourceHitCompanyObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_source_hit_company_minute(value.company, value.src_ip, value.country,value.year, value.month, value.day, value.hour,
@@ -345,21 +346,21 @@ object PushArtifact {
     }
   }
 
-  def pushIPSourceHitCompanyHour(value: Commons.IPSourceHitCompanyObjHour, connector: CassandraConnector) = {
+  def pushIPSourceHitCompanyHour(value: Commons.IPSourceHitCompanyObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_source_hit_company_hour(value.company, value.src_ip, value.country,value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushIPSourceHitCompanyDay(value: Commons.IPSourceHitCompanyObjDay, connector: CassandraConnector) = {
+  def pushIPSourceHitCompanyDay(value: Commons.IPSourceHitCompanyObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_source_hit_company_day(value.company, value.src_ip, value.country,value.year, value.month, value.day, value.value))
     }
   }
 
-  def pushIPSourceHitDeviceIdSec(value: Commons.IPSourceHitDeviceIdObjSec, connector: CassandraConnector) = {
+  def pushIPSourceHitDeviceIdSec(value: Commons.IPSourceHitDeviceIdObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_source_hit_device_id_second(value.device_id, value.src_ip, value.country,value.year, value.month, value.day, value.hour,
@@ -367,7 +368,7 @@ object PushArtifact {
     }
   }
 
-  def pushIPSourceHitDeviceIdMin(value: Commons.IPSourceHitDeviceIdObjMin, connector: CassandraConnector) = {
+  def pushIPSourceHitDeviceIdMin(value: Commons.IPSourceHitDeviceIdObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_source_hit_device_id_minute(value.device_id, value.src_ip, value.country,value.year, value.month, value.day, value.hour,
@@ -375,21 +376,21 @@ object PushArtifact {
     }
   }
 
-  def pushIPSourceHitDeviceIdHour(value: Commons.IPSourceHitDeviceIdObjHour, connector: CassandraConnector) = {
+  def pushIPSourceHitDeviceIdHour(value: Commons.IPSourceHitDeviceIdObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_source_hit_device_id_hour(value.device_id, value.src_ip, value.country,value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushIPSourceHitDeviceIdDay(value: Commons.IPSourceHitDeviceIdObjDay, connector: CassandraConnector) = {
+  def pushIPSourceHitDeviceIdDay(value: Commons.IPSourceHitDeviceIdObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_source_hit_device_id_day(value.device_id, value.src_ip, value.country,value.year, value.month, value.day, value.value))
     }
   }
 
-  def pushIPDestHitCompanySec(value: Commons.IPDestHitCompanyObjSec, connector: CassandraConnector) = {
+  def pushIPDestHitCompanySec(value: Commons.IPDestHitCompanyObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_dest_hit_company_second(value.company, value.dest_ip, value.country,value.year, value.month, value.day, value.hour,
@@ -397,7 +398,7 @@ object PushArtifact {
     }
   }
 
-  def pushIPDestHitCompanyMin(value: Commons.IPDestHitCompanyObjMin, connector: CassandraConnector) = {
+  def pushIPDestHitCompanyMin(value: Commons.IPDestHitCompanyObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_dest_hit_company_minute(value.company, value.dest_ip, value.country,value.year, value.month, value.day, value.hour,
@@ -405,21 +406,21 @@ object PushArtifact {
     }
   }
 
-  def pushIPDestHitCompanyHour(value: Commons.IPDestHitCompanyObjHour, connector: CassandraConnector) = {
+  def pushIPDestHitCompanyHour(value: Commons.IPDestHitCompanyObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_dest_hit_company_hour(value.company, value.dest_ip, value.country,value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushIPDestHitCompanyDay(value: Commons.IPDestHitCompanyObjDay, connector: CassandraConnector) = {
+  def pushIPDestHitCompanyDay(value: Commons.IPDestHitCompanyObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_dest_hit_company_day(value.company, value.dest_ip, value.country,value.year, value.month, value.day, value.value))
     }
   }
 
-  def pushIPDestHitDeviceIdSec(value: Commons.IPDestHitDeviceIdObjSec, connector: CassandraConnector) = {
+  def pushIPDestHitDeviceIdSec(value: Commons.IPDestHitDeviceIdObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_dest_hit_device_id_second(value.device_id, value.dest_ip, value.country,value.year, value.month, value.day, value.hour,
@@ -427,7 +428,7 @@ object PushArtifact {
     }
   }
 
-  def pushIPDestHitDeviceIdMin(value: Commons.IPDestHitDeviceIdObjMin, connector: CassandraConnector) = {
+  def pushIPDestHitDeviceIdMin(value: Commons.IPDestHitDeviceIdObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_dest_hit_device_id_minute(value.device_id, value.dest_ip, value.country,value.year, value.month, value.day, value.hour,
@@ -435,21 +436,21 @@ object PushArtifact {
     }
   }
 
-  def pushIPDestHitDeviceIdHour(value: Commons.IPDestHitDeviceIdObjHour, connector: CassandraConnector) = {
+  def pushIPDestHitDeviceIdHour(value: Commons.IPDestHitDeviceIdObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_dest_hit_device_id_hour(value.device_id, value.dest_ip, value.country,value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushIPDestHitDeviceIdDay(value: Commons.IPDestHitDeviceIdObjDay, connector: CassandraConnector) = {
+  def pushIPDestHitDeviceIdDay(value: Commons.IPDestHitDeviceIdObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_ip_dest_hit_device_id_day(value.device_id, value.dest_ip, value.country,value.year, value.month, value.day, value.value))
     }
   }
 
-  def pushCountrySrcHitCompanySec(value: Commons.CountrySrcHitCompanyObjSec, connector: CassandraConnector) = {
+  def pushCountrySrcHitCompanySec(value: Commons.CountrySrcHitCompanyObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_source_hit_company_second(value.company, value.src_country, value.year, value.month, value.day, value.hour,
@@ -457,7 +458,7 @@ object PushArtifact {
     }
   }
 
-  def pushCountrySrcHitCompanyMin(value: Commons.CountrySrcHitCompanyObjMin, connector: CassandraConnector) = {
+  def pushCountrySrcHitCompanyMin(value: Commons.CountrySrcHitCompanyObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_source_hit_company_minute(value.company, value.src_country, value.year, value.month, value.day, value.hour,
@@ -465,21 +466,21 @@ object PushArtifact {
     }
   }
 
-  def pushCountrySrcHitCompanyHour(value: Commons.CountrySrcHitCompanyObjHour, connector: CassandraConnector) = {
+  def pushCountrySrcHitCompanyHour(value: Commons.CountrySrcHitCompanyObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_source_hit_company_hour(value.company, value.src_country, value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushCountrySrcHitCompanyDay(value: Commons.CountrySrcHitCompanyObjDay, connector: CassandraConnector) = {
+  def pushCountrySrcHitCompanyDay(value: Commons.CountrySrcHitCompanyObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_source_hit_company_day(value.company, value.src_country, value.year, value.month, value.day, value.value))
     }
   }
 
-  def pushCountrySrcHitDeviceIdSec(value: Commons.CountrySrcHitDeviceIdObjSec, connector: CassandraConnector) = {
+  def pushCountrySrcHitDeviceIdSec(value: Commons.CountrySrcHitDeviceIdObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_source_hit_device_id_second(value.device_id, value.src_country, value.year, value.month, value.day, value.hour,
@@ -487,7 +488,7 @@ object PushArtifact {
     }
   }
 
-  def pushCountrySrcHitDeviceIdMin(value: Commons.CountrySrcHitDeviceIdObjMin, connector: CassandraConnector) = {
+  def pushCountrySrcHitDeviceIdMin(value: Commons.CountrySrcHitDeviceIdObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_source_hit_device_id_minute(value.device_id, value.src_country, value.year, value.month, value.day, value.hour,
@@ -495,21 +496,21 @@ object PushArtifact {
     }
   }
 
-  def pushCountrySrcHitDeviceIdHour(value: Commons.CountrySrcHitDeviceIdObjHour, connector: CassandraConnector) = {
+  def pushCountrySrcHitDeviceIdHour(value: Commons.CountrySrcHitDeviceIdObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_source_hit_device_id_hour(value.device_id, value.src_country, value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushCountrySrcHitDeviceIdDay(value: Commons.CountrySrcHitDeviceIdObjDay, connector: CassandraConnector) = {
+  def pushCountrySrcHitDeviceIdDay(value: Commons.CountrySrcHitDeviceIdObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_source_hit_device_id_day(value.device_id, value.src_country, value.year, value.month, value.day, value.value))
     }
   }
 
-  def pushCountryDestHitCompanySec(value: Commons.CountryDestHitCompanyObjSec, connector: CassandraConnector) = {
+  def pushCountryDestHitCompanySec(value: Commons.CountryDestHitCompanyObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_dest_hit_company_second(value.company, value.dest_country, value.year, value.month, value.day, value.hour,
@@ -517,7 +518,7 @@ object PushArtifact {
     }
   }
 
-  def pushCountryDestHitCompanyMin(value: Commons.CountryDestHitCompanyObjMin, connector: CassandraConnector) = {
+  def pushCountryDestHitCompanyMin(value: Commons.CountryDestHitCompanyObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_dest_hit_company_minute(value.company, value.dest_country, value.year, value.month, value.day, value.hour,
@@ -525,21 +526,21 @@ object PushArtifact {
     }
   }
 
-  def pushCountryDestHitCompanyHour(value: Commons.CountryDestHitCompanyObjHour, connector: CassandraConnector) = {
+  def pushCountryDestHitCompanyHour(value: Commons.CountryDestHitCompanyObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_dest_hit_company_hour(value.company, value.dest_country, value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushCountryDestHitCompanyDay(value: Commons.CountryDestHitCompanyObjDay, connector: CassandraConnector) = {
+  def pushCountryDestHitCompanyDay(value: Commons.CountryDestHitCompanyObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_dest_hit_company_day(value.company, value.dest_country, value.year, value.month, value.day, value.value))
     }
   }
 
-  def pushCountryDestHitDeviceIdSec(value: Commons.CountryDestHitDeviceIdObjSec, connector: CassandraConnector) = {
+  def pushCountryDestHitDeviceIdSec(value: Commons.CountryDestHitDeviceIdObjSec, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_dest_hit_device_id_second(value.device_id, value.dest_country, value.year, value.month, value.day, value.hour,
@@ -547,7 +548,7 @@ object PushArtifact {
     }
   }
 
-  def pushCountryDestHitDeviceIdMin(value: Commons.CountryDestHitDeviceIdObjMin, connector: CassandraConnector) = {
+  def pushCountryDestHitDeviceIdMin(value: Commons.CountryDestHitDeviceIdObjMin, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_dest_hit_device_id_minute(value.device_id, value.dest_country, value.year, value.month, value.day, value.hour,
@@ -555,14 +556,14 @@ object PushArtifact {
     }
   }
 
-  def pushCountryDestHitDeviceIdHour(value: Commons.CountryDestHitDeviceIdObjHour, connector: CassandraConnector) = {
+  def pushCountryDestHitDeviceIdHour(value: Commons.CountryDestHitDeviceIdObjHour, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_dest_hit_device_id_hour(value.device_id, value.dest_country, value.year, value.month, value.day, value.hour, value.value))
     }
   }
 
-  def pushCountryDestHitDeviceIdDay(value: Commons.CountryDestHitDeviceIdObjDay, connector: CassandraConnector) = {
+  def pushCountryDestHitDeviceIdDay(value: Commons.CountryDestHitDeviceIdObjDay, connector: CassandraConnector): ResultSet = {
     connector.withSessionDo{
       session =>
         session.execute(Statements.push_country_dest_hit_device_id_day(value.device_id, value.dest_country, value.year, value.month, value.day, value.value))
