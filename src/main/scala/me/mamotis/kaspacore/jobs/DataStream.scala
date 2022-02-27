@@ -103,6 +103,74 @@ object DataStream extends Utils {
       $"sig_id", $"sig_gen", $"sig_rev", $"src_country", $"src_region",
       $"dest_country", $"dest_region").as[Commons.EventObj]
 
+    //++++++++++++++++++++++++Event for Dashboard++++++++++++++++++++++++
+    //+++++Second
+    val eventDf1s = parsedRawDf.select(
+      to_utc_timestamp(from_unixtime($"timestamp"), "GMT").alias("timestamp"),
+      $"device_id", $"protocol", $"ip_type", $"src_mac", $"dest_mac", $"src_ip",
+      $"dest_ip", $"src_port", $"dst_port", $"alert_msg", $"classification", $"priority", $"sig_id",
+      $"sig_gen", $"sig_rev", $"company"
+    ).withColumn(
+      "value", lit(1)
+    ).withWatermark(
+      "timestamp", "1 seconds"
+    ).groupBy(
+      $"device_id", $"protocol", $"ip_type", $"src_mac", $"dest_mac", $"src_ip",
+      $"dest_ip", $"src_port", $"dst_port", $"alert_msg", $"classification", $"priority", $"sig_id",
+      $"sig_gen", $"sig_rev", $"company",
+      window($"timestamp", "1 seconds").alias("timestamp")
+    ).sum("value")
+
+    val eventDf1s_2 = eventDf1s.select(
+      $"timestamp.start", $"device_id", $"protocol", $"ip_type", $"src_mac", $"dest_mac", $"src_ip",
+      $"dest_ip", $"src_port", $"dst_port", $"alert_msg", $"classification", $"priority", $"sig_id",
+      $"sig_gen", $"sig_rev", $"company", $"sum(value)"
+    ).map {
+      r =>
+        val ts = r.getAs[Timestamp](0).toString
+        val device_id = r.getAs[String](1)
+        val protocol = r.getAs[String](2)
+        val ip_type = r.getAs[String](3)
+        val src_mac = r.getAs[String](4)
+        val dest_mac = r.getAs[String](5)
+        val src_ip = r.getAs[String](6)
+        val dest_ip = r.getAs[String](7)
+        val src_port = r.getAs[Long](8).toInt
+        val dest_port = r.getAs[Long](9).toInt
+        val alert_msg = r.getAs[String](10)
+        val classification = r.getAs[Long](11).toInt
+        val priority = r.getAs[Long](12).toInt
+        val sig_id = r.getAs[Long](13).toInt
+        val sig_gen = r.getAs[Long](14).toInt
+        val sig_rev = r.getAs[Long](15).toInt
+        val company = r.getAs[String](16)
+        val value = r.getAs[Long](17)
+
+        val src_country = Tools.IpLookupCountry(src_ip)
+        val src_region = Tools.IpLookupRegion(src_ip)
+        val dest_country = Tools.IpLookupCountry(dest_ip)
+        val dest_region = Tools.IpLookupRegion(dest_ip)
+
+
+        Commons.EventObj1s(
+          ts, company, device_id, protocol, ip_type, src_mac, dest_mac, src_ip, dest_ip, src_port, dest_port,
+          alert_msg, classification, priority, sig_id, sig_gen, sig_rev, src_country, src_region,
+          dest_country, dest_region, value
+        )
+    }.toDF(ColsArtifact.colsEventObj1s: _*)
+
+    val eventDs1s = eventDf1s_2.select(
+      $"timestamp", $"company", $"device_id", $"protocol", $"ip_type", $"src_mac", $"dest_mac",
+      $"src_ip", $"dest_ip", $"src_port", $"dest_port", $"alert_msg", $"classification", $"priority",
+      $"sig_id", $"sig_gen", $"sig_rev", $"src_country", $"src_region", $"dest_country", $"dest_region", $"value"
+    ).as[Commons.EventObj1s]
+
+    //+++++Minute
+    // TODO:
+
+    //+++++Hour
+    // TODO:
+
     //+++++++++++++Push Event Hit Company per Second++++++++++++++++++++++
     //+++++Second
     val eventHitCompanySecDf_1 = parsedRawDf.select(
@@ -433,6 +501,14 @@ object DataStream extends Utils {
     }
 
     //====================================================WRITE QUERY=================================
+
+    eventDs1s.selectExpr("to_json(struct(*)) AS value")
+      .writeStream
+      .format("kafka")
+      .outputMode("append")
+      .option("kafka.bootstrap.servers", PropertiesLoader.kafkaBrokerUrl)
+      .option("topic", PropertiesLoader.kafkaEvent1sOutputTopic)
+      .start()
 
     signature1sDs
       .writeStream

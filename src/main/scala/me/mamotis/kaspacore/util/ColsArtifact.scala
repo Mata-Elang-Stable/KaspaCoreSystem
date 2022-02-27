@@ -7,6 +7,10 @@ object ColsArtifact {
     "src_port", "dest_port", "alert_msg", "classification", "priority",
     "sig_id", "sig_gen", "sig_rev", "src_country", "src_region", "dest_country", "dest_region")
 
+  val colsEventObj1s = List("timestamp", "company", "device_id", "protocol", "ip_type", "src_mac",
+    "dest_mac", "src_ip", "dest_ip", "src_port", "dest_port", "alert_msg", "classification", "priority",
+    "sig_id", "sig_gen", "sig_rev", "src_country", "src_region", "dest_country", "dest_region", "value")
+
   val colsEventObjTs = List("ts", "company", "device_id", "timestamp",
     "protocol", "ip_type", "src_mac", "dest_mac", "src_ip", "dest_ip",
     "src_port", "dest_port", "alert_msg", "classification", "priority",
