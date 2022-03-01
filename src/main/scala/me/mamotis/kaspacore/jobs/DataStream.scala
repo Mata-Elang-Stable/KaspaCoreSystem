@@ -74,14 +74,10 @@ object DataStream extends Utils {
       val sig_gen = r.getAs[Long](14).toInt
       val sig_rev = r.getAs[Long](15).toInt
       val company = r.getAs[String](16)
-
-      val src_details = Tools.IpLookupCountry(src_ip)
-      val src_country = src_details.countryName
-      val src_region = src_details.regionName.get
-
-      val dest_details = Tools.IpLookupCountry(dest_ip)
-      val dest_country = dest_details.countryName
-      val dest_region = dest_details.regionName.get
+      val src_country = Tools.IpLookupCountry(src_ip)
+      val src_region = Tools.IpLookupRegion(src_ip)
+      val dest_country = Tools.IpLookupCountry(dest_ip)
+      val dest_region = Tools.IpLookupRegion(dest_ip)
 
       val date = new DateTime((ts.toDouble * 1000).toLong)
 
