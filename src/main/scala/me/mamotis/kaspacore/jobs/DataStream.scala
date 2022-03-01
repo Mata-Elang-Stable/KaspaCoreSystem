@@ -74,20 +74,10 @@ object DataStream extends Utils {
       val sig_gen = r.getAs[Long](14).toInt
       val sig_rev = r.getAs[Long](15).toInt
       val company = r.getAs[String](16)
-
-      val src_details = Tools.IpLookupCountry(src_ip)
-      val src_country = src_details.countryName
-      val src_region = src_details.regionName match {
-        case Some(regionName) => regionName
-        case _ => null
-      }
-
-      val dest_details = Tools.IpLookupCountry(dest_ip)
-      val dest_country = dest_details.countryName
-      val dest_region = dest_details.regionName match {
-        case Some(regionName) => regionName
-        case _ => null
-      }
+      val src_country = Tools.IpLookupCountry(src_ip)
+      val src_region = Tools.IpLookupRegion(src_ip)
+      val dest_country = Tools.IpLookupCountry(dest_ip)
+      val dest_region = Tools.IpLookupRegion(dest_ip)
 
       val date = new DateTime((ts.toDouble * 1000).toLong)
 
@@ -150,49 +140,23 @@ object DataStream extends Utils {
         val company = r.getAs[String](16)
         val value = r.getAs[Long](17)
 
-        val src_details = Tools.IpLookupCountry(src_ip)
-        val src_country_code = src_details.countryCode
-        val src_country_name = src_details.countryName
-        val src_lat = src_details.latitude
-        val src_long = src_details.longitude
-        val src_region = src_details.region match {
-          case Some(region) => region
-          case _ => null
-        }
-        val src_region_name = src_details.regionName match {
-          case Some(regionName) => regionName
-          case _ => null
-        }
-
-        val dest_details = Tools.IpLookupCountry(dest_ip)
-        val dest_country_code = dest_details.countryCode
-        val dest_country_name = dest_details.countryName
-        val dest_lat = dest_details.latitude
-        val dest_long = dest_details.longitude
-        val dest_region = dest_details.region match {
-          case Some(region) => region
-          case _ => null
-        }
-        val dest_region_name = dest_details.regionName match {
-          case Some(regionName) => regionName
-          case _ => null
-        }
+        val src_country = Tools.IpLookupCountry(src_ip)
+        val src_region = Tools.IpLookupRegion(src_ip)
+        val dest_country = Tools.IpLookupCountry(dest_ip)
+        val dest_region = Tools.IpLookupRegion(dest_ip)
 
 
         Commons.EventObj1s(
           ts, company, device_id, protocol, ip_type, src_mac, dest_mac, src_ip, dest_ip, src_port, dest_port,
-          alert_msg, classification, priority, sig_id, sig_gen, sig_rev, src_country_code, src_country_name,
-          src_lat, src_long, src_region, src_region_name, dest_country_code, dest_country_name, dest_lat, dest_long,
-          dest_region, dest_region_name, value
+          alert_msg, classification, priority, sig_id, sig_gen, sig_rev, src_country, src_region,
+          dest_country, dest_region, value
         )
     }.toDF(ColsArtifact.colsEventObj1s: _*)
 
     val eventDs1s = eventDf1s_2.select(
       $"timestamp", $"company", $"device_id", $"protocol", $"ip_type", $"src_mac", $"dest_mac",
       $"src_ip", $"dest_ip", $"src_port", $"dest_port", $"alert_msg", $"classification", $"priority",
-      $"sig_id", $"sig_gen", $"sig_rev", $"src_country_code", $"src_country_name", $"src_lat", $"src_long",
-      $"src_region", $"src_region_name", $"dest_country_code", $"dest_country_name", $"dest_lat", $"dest_long",
-      $"dest_region", $"dest_region_name", $"value"
+      $"sig_id", $"sig_gen", $"sig_rev", $"src_country", $"src_region", $"dest_country", $"dest_region", $"value"
     ).as[Commons.EventObj1s]
 
     //+++++Minute
