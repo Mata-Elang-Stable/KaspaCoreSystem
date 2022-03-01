@@ -29,6 +29,3 @@ KAFKA_CHECKPOINT_LOCATION = "hdfs://127.0.0.1:9000/user/USERNAME/kafka-checkpoin
 CASSANDRA_USERNAME = "admin"
 CASSANDRA_PASSWORD = "YOUR_PASSWORD_HERE"
 CASSANDRA_KEYSPACE = "kaspa"
-
-//MONGO DB
-MONGODB_URI = "mongodb://USERNAME:PASSWORD@127.0.0.1:27017/stevia.event?replicaSet=rs0&authSource=admin"

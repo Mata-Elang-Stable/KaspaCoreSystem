@@ -12,8 +12,8 @@ assembly / assemblyShadeRules := Seq(
       "com.fasterxml.jackson.module" % "jackson-module-scala_2.11" % "2.13.1",
       "com.fasterxml.jackson.core" % "jackson-annotations" % "2.13.1",
       "com.snowplowanalytics" %% "scala-maxmind-iplookups" % "0.5.0",
-      "com.maxmind.geoip2" % "geoip2" % "3.0.0",
-      "com.maxmind.db" % "maxmind-db" % "2.0.0"
+      "com.maxmind.geoip2" % "geoip2" % "2.11.0",
+      "com.maxmind.db" % "maxmind-db" % "1.2.2"
     )
 )
 
