@@ -16,8 +16,10 @@ object Commons {
                         dest_ip: String, src_port: Integer, dest_port: Integer,
                         alert_msg: String, classification: Integer,
                         priority: Integer, sig_id: Integer, sig_gen: Integer,
-                        sig_rev: Integer, src_country: String, src_region: String,
-                        dest_country: String, dest_region: String, value: Long) extends Serializable
+                        sig_rev: Integer, src_country_code: String, src_country_name: String,
+                        src_lat: Float, src_long: Float, src_region: String, src_region_name: String,
+                        dest_country_code: String, dest_country_name: String, dest_lat: Float, dest_long: Float,
+                        dest_region: String, dest_region_name: String, value: Long) extends Serializable
 
   case class EventObjTs(ts: String, company: String, device_id: String, timestamp: String, protocol: String, ip_type: String,
                         src_mac: String, dest_mac: String, src_ip: String,

@@ -140,23 +140,37 @@ object DataStream extends Utils {
         val company = r.getAs[String](16)
         val value = r.getAs[Long](17)
 
-        val src_country = Tools.IpLookupCountry(src_ip)
-        val src_region = Tools.IpLookupRegion(src_ip)
-        val dest_country = Tools.IpLookupCountry(dest_ip)
-        val dest_region = Tools.IpLookupRegion(dest_ip)
+        val src_details = Tools.IpLookupCountry(src_ip)
+        val src_country_code = src_details.countryCode
+        val src_country_name = src_details.countryName
+        val src_lat = src_details.latitude
+        val src_long = src_details.longitude
+        val src_region = src_details.region.get
+        val src_region_name = src_details.regionName.get
+
+        val dest_details = Tools.IpLookupCountry(dest_ip)
+        val dest_country_code = dest_details.countryCode
+        val dest_country_name = dest_details.countryName
+        val dest_lat = dest_details.latitude
+        val dest_long = dest_details.longitude
+        val dest_region = dest_details.region.get
+        val dest_region_name = dest_details.regionName.get
 
 
         Commons.EventObj1s(
           ts, company, device_id, protocol, ip_type, src_mac, dest_mac, src_ip, dest_ip, src_port, dest_port,
-          alert_msg, classification, priority, sig_id, sig_gen, sig_rev, src_country, src_region,
-          dest_country, dest_region, value
+          alert_msg, classification, priority, sig_id, sig_gen, sig_rev, src_country_code, src_country_name,
+          src_lat, src_long, src_region, src_region_name, dest_country_code, dest_country_name, dest_lat, dest_long,
+          dest_region, dest_region_name, value
         )
     }.toDF(ColsArtifact.colsEventObj1s: _*)
 
     val eventDs1s = eventDf1s_2.select(
       $"timestamp", $"company", $"device_id", $"protocol", $"ip_type", $"src_mac", $"dest_mac",
       $"src_ip", $"dest_ip", $"src_port", $"dest_port", $"alert_msg", $"classification", $"priority",
-      $"sig_id", $"sig_gen", $"sig_rev", $"src_country", $"src_region", $"dest_country", $"dest_region", $"value"
+      $"sig_id", $"sig_gen", $"sig_rev", $"src_country_code", $"src_country_name", $"src_lat", $"src_long",
+      $"src_region", $"src_region_name", $"dest_country_code", $"dest_country_name", $"dest_lat", $"dest_long",
+      $"dest_region", $"dest_region_name", $"value"
     ).as[Commons.EventObj1s]
 
     //+++++Minute

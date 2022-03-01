@@ -1,8 +1,7 @@
 package me.mamotis.kaspacore.util
 import org.apache.spark.sql.types._
-
 import cats.effect.IO
-import com.snowplowanalytics.maxmind.iplookups.IpLookups
+import com.snowplowanalytics.maxmind.iplookups.{IpLookups, model}
 import org.apache.spark.SparkFiles
 
 object Tools {
@@ -36,7 +35,7 @@ object Tools {
     .add("dest_country", StringType, nullable = true)
     .add("dest_region", StringType, nullable = true)
 
-  def IpLookupCountry(ipAddress: String): String = {
+  def IpLookupCountry(ipAddress: String): model.IpLocation = {
     val result = (for {
       ipLookups <- IpLookups.createFromFilenames[IO](
         geoFile = Some(SparkFiles.get(PropertiesLoader.GeoIpFilename)),
@@ -52,10 +51,9 @@ object Tools {
 
     result.ipLocation match {
       case Some(Right(loc)) =>
-        if(loc.countryCode.isEmpty) "UNDEFINED"
-        else loc.countryCode
+        loc
       case _ =>
-        "UNDEFINED"
+        null
     }
   }
 
