@@ -52,8 +52,8 @@ object Tools {
 
     result.ipLocation match {
       case Some(Right(loc)) =>
-        if(loc.countryName.isEmpty) "UNDEFINED"
-        else loc.countryName
+        if(loc.countryCode.isEmpty) "UNDEFINED"
+        else loc.countryCode
       case _ =>
         "UNDEFINED"
     }

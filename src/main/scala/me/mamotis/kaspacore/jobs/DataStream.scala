@@ -1,19 +1,13 @@
 package me.mamotis.kaspacore.jobs
 
 import com.databricks.spark.avro.ConfluentSparkAvroUtils
-import com.mongodb.client.MongoCollection
-import com.mongodb.spark.MongoConnector
-import com.mongodb.spark.config.WriteConfig
 import me.mamotis.kaspacore.util._
 import org.apache.spark.sql.ForeachWriter
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.StringType
-import org.bson.Document
 import org.joda.time.DateTime
 
 import java.sql.Timestamp
-import scala.collection.JavaConverters._
-import scala.collection.mutable
 
 object DataStream extends Utils {
 
@@ -347,97 +341,6 @@ object DataStream extends Utils {
 
     //endregion
 
-    //region sliding 1 second
-
-    val signature1sDf_1 = parsedRawDf
-      .select(
-        to_utc_timestamp(from_unixtime($"timestamp"), "GMT").alias("timestamp").cast(StringType),
-        $"alert_msg",
-        $"src_ip",
-        $"dest_ip",
-        $"company")
-      .withColumn("value", lit(1))
-      .groupBy(
-        $"alert_msg",
-        $"src_ip",
-        $"dest_ip",
-        $"company",
-        window($"timestamp", "1 second").alias("windows"))
-      .sum("value")
-
-    val signature1sDf_2 = signature1sDf_1
-      .select($"company", $"alert_msg", $"windows.start", $"sum(value)", $"src_ip", $"dest_ip")
-      .map {
-        r =>
-          val company = r.getAs[String](0)
-          val alert_msg = r.getAs[String](1)
-
-          val epoch = r.getAs[Timestamp](2).getTime
-
-          val date = new DateTime(epoch)
-
-          val value = r.getAs[Long](3)
-
-          val src_ip = r.getAs[String](4)
-          val dest_ip = r.getAs[String](5)
-          val src_country = Tools.IpLookupCountry(src_ip)
-          val dest_country = Tools.IpLookupCountry(dest_ip)
-
-          Commons.SteviaObjSec(
-            company, alert_msg, src_ip, src_country, dest_ip, dest_country, date.year().get(), date.monthOfYear().get(), date.dayOfMonth().get(), date.hourOfDay().get(), date.minuteOfHour().get(), date.secondOfMinute().get(), value
-          )
-      }.toDF(ColsArtifact.colsSteviaObjSec: _*)
-
-    val signature1sDs = signature1sDf_2
-      .select($"company", $"alert_msg", $"src_ip", $"src_country", $"dest_ip", $"dest_country", $"year",
-        $"month", $"day", $"hour", $"minute", $"second", $"value")
-      .as[Commons.SteviaObjSec]
-
-    //endregion
-
-    //======================================================MONGODB WRITER======================================
-
-    val writerMongoSig: ForeachWriter[Commons.SteviaObjSec] = new ForeachWriter[Commons.SteviaObjSec] {
-
-      val writeConfig: WriteConfig = WriteConfig(Map("uri" -> PropertiesLoader.mongodbUri))
-      var mongoConnector: MongoConnector = _
-      var events: mutable.ArrayBuffer[Commons.SteviaObjSec] = _
-
-      override def open(partitionId: Long, version: Long): Boolean = {
-        mongoConnector = MongoConnector(writeConfig.asOptions)
-        events = new mutable.ArrayBuffer[Commons.SteviaObjSec]()
-        true
-      }
-
-      override def process(value: Commons.SteviaObjSec): Unit = {
-        events.append(value)
-      }
-
-      override def close(errorOrNull: Throwable): Unit = {
-        if (events.nonEmpty) {
-          mongoConnector.withCollectionDo(writeConfig, { collection: MongoCollection[Document] =>
-            collection.insertMany(events.map(sc => {
-              val doc = new Document()
-              doc.put("company", sc.company)
-              doc.put("year", sc.year)
-              doc.put("month", sc.month)
-              doc.put("day", sc.day)
-              doc.put("hour", sc.hour)
-              doc.put("minute", sc.minute)
-              doc.put("second", sc.second)
-              doc.put("alert_message", sc.alert_msg)
-              doc.put("src_ip", sc.src_ip)
-              doc.put("src_country", sc.src_country)
-              doc.put("dest_ip", sc.dest_ip)
-              doc.put("dest_country", sc.dest_country)
-              doc.put("value", sc.value)
-              doc
-            }).asJava)
-          })
-        }
-      }
-    }
-
     //======================================================CASSANDRA WRITER======================================
     val writerEventHitCompanySec: ForeachWriter[Commons.EventHitCompanyObjSec] =
       new ForeachWriter[Commons.EventHitCompanyObjSec] {
@@ -508,13 +411,6 @@ object DataStream extends Utils {
       .outputMode("append")
       .option("kafka.bootstrap.servers", PropertiesLoader.kafkaBrokerUrl)
       .option("topic", PropertiesLoader.kafkaEvent1sOutputTopic)
-      .start()
-
-    signature1sDs
-      .writeStream
-      .outputMode("update")
-      .queryName("Event Push Mongo 1s Window")
-      .foreach(writerMongoSig)
       .start()
 
     eventDs
