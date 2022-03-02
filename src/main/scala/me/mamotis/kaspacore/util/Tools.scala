@@ -1,9 +1,9 @@
 package me.mamotis.kaspacore.util
-import org.apache.spark.sql.types._
 
 import cats.effect.IO
 import com.snowplowanalytics.maxmind.iplookups.IpLookups
 import org.apache.spark.SparkFiles
+import org.apache.spark.sql.types._
 
 object Tools {
 
@@ -36,7 +36,22 @@ object Tools {
     .add("dest_country", StringType, nullable = true)
     .add("dest_region", StringType, nullable = true)
 
+  def validateIPAddress(ipAddress: String): Boolean = {
+    val ipv4 = """^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$""".r
+    val ipv6 = """^[0-9abcdef]{1,4}\:[0-9abcdef]{1,4}\:[0-9abcdef]{1,4}\:[0-9abcdef]{1,4}\:[0-9abcdef]{1,4}\:[0-9abcdef]{1,4}\:[0-9abcdef]{1,4}\:[0-9abcdef]{1,4}$""".r
+
+    (ipv4 findFirstIn ipAddress)
+      .map(_ => true)
+      .getOrElse(
+        (ipv6 findFirstIn ipAddress)
+          .isDefined
+      )
+  }
+
   def IpLookupCountry(ipAddress: String): String = {
+    if (!validateIPAddress(ipAddress))
+      return "UNDEFINED"
+
     val result = (for {
       ipLookups <- IpLookups.createFromFilenames[IO](
         geoFile = Some(SparkFiles.get(PropertiesLoader.GeoIpFilename)),
@@ -52,7 +67,7 @@ object Tools {
 
     result.ipLocation match {
       case Some(Right(loc)) =>
-        if(loc.countryCode.isEmpty) "UNDEFINED"
+        if (loc.countryCode.isEmpty) "UNDEFINED"
         else loc.countryCode
       case _ =>
         "UNDEFINED"
@@ -60,6 +75,9 @@ object Tools {
   }
 
   def IpLookupRegion(ipAddress: String): String = {
+    if (!validateIPAddress(ipAddress))
+      return "UNDEFINED"
+
     val result = (for {
       ipLookups <- IpLookups.createFromFilenames[IO](
         geoFile = Some(SparkFiles.get(PropertiesLoader.GeoIpFilename)),
@@ -75,7 +93,7 @@ object Tools {
 
     result.ipLocation match {
       case Some(Right(loc)) =>
-        if(loc.regionName.isEmpty) "UNDEFINED"
+        if (loc.regionName.isEmpty) "UNDEFINED"
         else loc.regionName.get
       case _ =>
         "UNDEFINED"
