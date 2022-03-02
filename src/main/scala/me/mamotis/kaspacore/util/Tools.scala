@@ -67,8 +67,12 @@ object Tools {
 
     result.ipLocation match {
       case Some(Right(loc)) =>
-        if (loc.countryCode.isEmpty) "UNDEFINED"
-        else loc.countryCode
+        try {
+          if (loc.countryCode.isEmpty) "UNDEFINED"
+          else loc.countryCode
+        } catch {
+          case e: NullPointerException => "UNDEFINED"
+        }
       case _ =>
         "UNDEFINED"
     }
@@ -93,8 +97,12 @@ object Tools {
 
     result.ipLocation match {
       case Some(Right(loc)) =>
-        if (loc.regionName.isEmpty) "UNDEFINED"
-        else loc.regionName.get
+        try {
+          if (loc.regionName.isEmpty) "UNDEFINED"
+          else loc.regionName.get
+        } catch {
+          case e: NullPointerException => "UNDEFINED"
+        }
       case _ =>
         "UNDEFINED"
     }
