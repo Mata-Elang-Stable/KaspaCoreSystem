@@ -409,7 +409,7 @@ object DataStream extends Utils {
       .writeStream
       .format("kafka")
       .outputMode("append")
-      .option("kafka.bootstrap.servers", PropertiesLoader.kafkaBrokerUrl)
+      .option("kafka.bootstrap.servers", PropertiesLoader.kafkaBrokerUrlOutput)
       .option("topic", PropertiesLoader.kafkaEvent1sOutputTopic)
       .start()
 
