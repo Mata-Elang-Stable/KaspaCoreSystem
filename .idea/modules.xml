@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/KaspaCore.iml" filepath="$PROJECT_DIR$/.idea/modules/KaspaCore.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kaspacoresystem-build.iml" filepath="$PROJECT_DIR$/.idea/modules/kaspacoresystem-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/KaspaCore-build.iml" filepath="$PROJECT_DIR$/.idea/modules/KaspaCore-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/KaspaCoreSystem.KaspaCore.iml" filepath="$PROJECT_DIR$/.idea/modules/KaspaCoreSystem.KaspaCore.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/kaspacoresystem3-build.iml" filepath="$PROJECT_DIR$/.idea/modules/kaspacoresystem3-build.iml" />
     </modules>
   </component>
