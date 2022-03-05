@@ -11,7 +11,6 @@ object PropertiesLoader {
   val kafkaInputTopic: String = conf.getString("KAFKA_INPUT_TOPIC")
   val kafkaStartingOffset: String = conf.getString("KAFKA_STARTING_OFFSET")
   val kafkaBrokerUrlOutput: String = conf.getString("KAFKA_BROKER_URL_OUTPUT")
-  val kafkaOutputTopic: String = conf.getString("KAFKA_OUTPUT_TOPIC")
   val kafkaEvent1sOutputTopic: String = conf.getString("KAFKA_EVENT1S_OUTPUT_TOPIC")
   val kafkaCheckpointLocation: String = conf.getString("KAFKA_CHECKPOINT_LOCATION")
 
@@ -30,6 +29,4 @@ object PropertiesLoader {
   val cassandraUsername: String = conf.getString("CASSANDRA_USERNAME")
   val cassandraPassword: String = conf.getString("CASSANDRA_PASSWORD")
   val cassandraKeyspace: String = conf.getString("CASSANDRA_KEYSPACE")
-
-  val mongodbUri: String = conf.getString("MONGODB_URI")
 }
