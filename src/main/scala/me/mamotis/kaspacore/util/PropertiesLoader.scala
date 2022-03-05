@@ -29,6 +29,4 @@ object PropertiesLoader {
   val cassandraUsername: String = conf.getString("CASSANDRA_USERNAME")
   val cassandraPassword: String = conf.getString("CASSANDRA_PASSWORD")
   val cassandraKeyspace: String = conf.getString("CASSANDRA_KEYSPACE")
-
-  val mongodbUri: String = conf.getString("MONGODB_URI")
 }
