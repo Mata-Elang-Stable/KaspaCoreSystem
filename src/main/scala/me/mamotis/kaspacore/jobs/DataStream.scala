@@ -12,19 +12,18 @@ import java.sql.Timestamp
 object DataStream extends Utils {
 
   def main(args: Array[String]): Unit = {
+
+    //=================================SPARK CONFIGURATION==================================
+    val sparkSession = getSparkSession(args)
+    val sparkContext = getSparkContext(sparkSession)
+
     //=================================AVRO DESERIALIZER====================================
     val utils = new ConfluentSparkAvroUtils(PropertiesLoader.schemaRegistryUrl)
     //    val keyDes = utils.deserializerForSubject(PropertiesLoader.kafkaInputTopic + "-key")
     val valDes = utils.deserializerForSubject(PropertiesLoader.kafkaInputTopic + "-value")
 
-    //=================================SPARK CONFIGURATION==================================
-
-    val sparkSession = getSparkSession(args)
-    val sparkContext = getSparkContext(sparkSession)
-
     // Maxmind GeoIP Configuration
     sparkContext.addFile(PropertiesLoader.GeoIpPath)
-
 
     // Cassandra Connector
     val connector = getCassandraSession(sparkContext)

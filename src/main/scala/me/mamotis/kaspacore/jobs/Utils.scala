@@ -21,6 +21,7 @@ private[jobs] trait Utils {
       .set("spark.cassandra.output.batch.grouping.key", "Partition")
       .set("spark.cassandra.output.concurrent.writes", "2000")
       .set("spark.sql.streaming.checkpointLocation", PropertiesLoader.kafkaCheckpointLocation)
+      .set("spark.sql.legacy.allowUntypedScalaUDF", "true")
 
     val session = SparkSession.builder()
       .config(conf)
