@@ -1,7 +1,7 @@
 package com.databricks.spark.avro
 
 import com.amazonaws.services.kms.model.DecryptRequest
-import com.amazonaws.services.kms.{ AWSKMS, AWSKMSClient }
+import com.amazonaws.services.kms.{ AWSKMS, AWSKMSClientBuilder }
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient
@@ -34,7 +34,7 @@ class ConfluentSparkAvroUtils(schemaRegistryURLs: String) extends Serializable {
 
   @transient private lazy val deserializer = new KafkaAvroDeserializer(schemaRegistry)
 
-  @transient private lazy val awsKms: AWSKMS = new AWSKMSClient()
+  @transient private lazy val awsKms: AWSKMS = AWSKMSClientBuilder.standard().build()
 
   @transient private lazy val keyCache = mutable.Map[Seq[Byte], Array[Byte]]()
 
