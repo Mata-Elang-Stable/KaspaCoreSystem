@@ -1,7 +1,8 @@
 package me.mamotis.kaspacore.util
 
 import cats.effect.IO
-import com.snowplowanalytics.maxmind.iplookups.IpLookups
+//import com.snowplowanalytics.maxmind.iplookups.IpLookups
+import com.snowplowanalytics.maxmind.iplookups.CreateIpLookups
 import org.apache.spark.SparkFiles
 import org.apache.spark.sql.types._
 
@@ -53,7 +54,8 @@ object Tools {
       return "UNDEFINED"
 
     val result = (for {
-      ipLookups <- IpLookups.createFromFilenames[IO](
+      //ipLookups <- IpLookups.createFromFilenames[IO](
+      ipLookups <- CreateIpLookups[IO].createFromFilenames(
         geoFile = Some(SparkFiles.get(PropertiesLoader.GeoIpFilename)),
         ispFile = None,
         domainFile = None,
@@ -83,7 +85,8 @@ object Tools {
       return "UNDEFINED"
 
     val result = (for {
-      ipLookups <- IpLookups.createFromFilenames[IO](
+      //ipLookups <- IpLookups.createFromFilenames[IO](
+      ipLookups <- CreateIpLookups[IO].createFromFilenames(
         geoFile = Some(SparkFiles.get(PropertiesLoader.GeoIpFilename)),
         ispFile = None,
         domainFile = None,

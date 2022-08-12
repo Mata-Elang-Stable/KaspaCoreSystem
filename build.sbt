@@ -37,8 +37,7 @@ libraryDependencies += "org.apache.kafka" % "kafka-clients" % "3.2.0"
 libraryDependencies += "com.datastax.spark" %% "spark-cassandra-connector" % "3.2.0"
 
 // https://mvnrepository.com/artifact/com.snowplowanalytics/scala-maxmind-iplookups
-// Required - AS-IS
-libraryDependencies += "com.snowplowanalytics" %% "scala-maxmind-iplookups" % "0.5.0"
+libraryDependencies += "com.snowplowanalytics" %% "scala-maxmind-iplookups" % "0.7.2"
 
 assembly / assemblyMergeStrategy := {
   {
